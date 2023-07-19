@@ -26,7 +26,8 @@ class KeyUtils {
         }
 
         fun getPrivateKey(keyPair: KeyPair): PrivateKey {
-            return Base64.getEncoder().encodeToString(keyPair.private.encoded)
+            val key = Base64.getEncoder().encodeToString(keyPair.private.encoded)
+            return PrivateKey(key)
         }
 
         fun getPublicKey(publicKey: PublicKey): SecurityPublicKey {
@@ -36,7 +37,7 @@ class KeyUtils {
         }
 
         fun getPrivateKey(privateKey: PrivateKey): SecurityPrivateKey {
-            val keySpec = getKeySpec(privateKey)
+            val keySpec = getKeySpec(privateKey.key)
             val keyFactory = KeyFactory.getInstance(ALGORITHM)
             return keyFactory.generatePrivate(keySpec)
         }

@@ -3,6 +3,7 @@ package crypto.rsa.api.controller
 import crypto.rsa.domain.model.Agent
 import crypto.rsa.domain.model.AgentId
 import crypto.rsa.domain.repository.AgentRepository
+import crypto.rsa.domain.service.AgentService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController
 class AgentController {
 
     @Autowired
+    lateinit var agentService: AgentService
+
+    @Autowired
     lateinit var agentRepository: AgentRepository
 
     @GetMapping
@@ -29,14 +33,14 @@ class AgentController {
         val agent = Agent(id)
 
         println("Private Key: ")
-        println(agent.privateKey.hashCode())
+        println(agent.privateKey.key.length)
 
         println("Public Key: ")
-        println(agent.publicKey.hashCode())
+        println(agent.publicKey.length)
         println("")
         println("")
 
-        return agentRepository.save(agent)
+        return agentService.save(agent)
 //        return agent
     }
 
