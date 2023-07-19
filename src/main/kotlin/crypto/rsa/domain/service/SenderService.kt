@@ -2,10 +2,8 @@ package crypto.rsa.domain.service
 
 import crypto.rsa.domain.model.AgentId
 import crypto.rsa.domain.model.Message
-import crypto.rsa.domain.model.Message.Companion.NO_CONTENT
-import crypto.rsa.domain.model.MessageType.*
 import crypto.rsa.domain.repository.AgentRepository
-import crypto.rsa.domain.utils.KeyUtils.Companion.getPrivateKey
+import crypto.rsa.domain.utils.KeyUtils.Companion.getPublicKey
 import crypto.rsa.domain.utils.RSAUtils.Companion.encode
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -24,20 +22,17 @@ class SenderService {
 
     fun requestPublicKey(sender: AgentId, receiver: AgentId): Message {
         val s = agentRepository.findById(sender).orElseThrow()
-        val m = messageService.save(Message(PUBLIC_KEY_REQUEST, NO_CONTENT, s.publicKey, sender, receiver))
+        val m = messageService.createPublicKeyRequest(s.publicKey, sender, receiver)
         return receiverService.requestPublicKey(m)
     }
 
-//    fun sendMessage(sender: AgentId, receiver: AgentId, content: ByteArray): Message? {
-//
-//        val rpk = requestPublicKey(sender, receiver)
-//
-//        val s = agentRepository.findById(sender).orElseThrow()
-//        val c = encode(content, getPrivateKey(s.privateKey))
-//        val m = messageService.save(Message(SIMPLE_MESSAGE, c, s.publicKey, sender, receiver))
-//    }
-
-
+    fun sendMessage(sender: AgentId, receiver: AgentId, content: ByteArray): Message? {
+        val rpk = requestPublicKey(sender, receiver)
+        val con = encode(content, getPublicKey(rpk.publicKey))
+        val sen = agentRepository.findById(sender).orElseThrow()
+        val mes = messageService.createSimpleMessage(con, sen.publicKey, sender, receiver)
+        return receiverService.receiveMessage(mes)
+    }
 }
 
 /*

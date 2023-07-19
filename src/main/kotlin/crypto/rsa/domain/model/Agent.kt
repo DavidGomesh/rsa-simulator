@@ -3,12 +3,12 @@ package crypto.rsa.domain.model
 import crypto.rsa.domain.utils.KeyUtils.Companion.generateKeyPair
 import crypto.rsa.domain.utils.KeyUtils.Companion.getPrivateKey
 import crypto.rsa.domain.utils.KeyUtils.Companion.getPublicKey
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
 import org.jetbrains.annotations.NotNull
-import java.util.UUID
 
 typealias AgentId = String
-typealias PrivateKeyId = UUID
 typealias PrivateKey = String
 typealias PublicKey = String
 

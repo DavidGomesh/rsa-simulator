@@ -5,11 +5,12 @@ import crypto.rsa.domain.model.PublicKey
 import java.security.KeyFactory
 import java.security.KeyPair
 import java.security.KeyPairGenerator
+import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.RSAKeyGenParameterSpec
 import java.security.spec.X509EncodedKeySpec
+import java.util.*
 import java.security.PrivateKey as SecurityPrivateKey
 import java.security.PublicKey as SecurityPublicKey
-import java.util.*
 
 class KeyUtils {
     companion object {
@@ -30,20 +31,15 @@ class KeyUtils {
         }
 
         fun getPublicKey(publicKey: PublicKey): SecurityPublicKey {
-            val keySpec = getKeySpec(publicKey)
+            val keySpec = X509EncodedKeySpec(Base64.getDecoder().decode(publicKey))
             val keyFactory = KeyFactory.getInstance(ALGORITHM)
             return keyFactory.generatePublic(keySpec)
         }
 
         fun getPrivateKey(privateKey: PrivateKey): SecurityPrivateKey {
-            val keySpec = getKeySpec(privateKey)
+            val keySpec = PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey))
             val keyFactory = KeyFactory.getInstance(ALGORITHM)
             return keyFactory.generatePrivate(keySpec)
-        }
-
-        private fun getKeySpec(key: String): X509EncodedKeySpec {
-            val keyBytes = Base64.getDecoder().decode(key)
-            return X509EncodedKeySpec(keyBytes)
         }
     }
 }

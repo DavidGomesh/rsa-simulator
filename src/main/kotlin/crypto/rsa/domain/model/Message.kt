@@ -3,7 +3,6 @@ package crypto.rsa.domain.model
 import jakarta.persistence.*
 import org.jetbrains.annotations.NotNull
 import java.time.LocalDateTime
-import java.util.UUID
 
 typealias MessageId = Int
 
@@ -39,6 +38,10 @@ class Message (
 
 enum class MessageType {
     SIMPLE_MESSAGE,
+    MESSAGE_RECEIVED_CONFIRMATION,
+
+    DECRYPTION_ERROR,
+
     PUBLIC_KEY_REQUEST,
     PUBLIC_KEY_RESPONSE,
 }
