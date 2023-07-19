@@ -33,7 +33,7 @@ class AgentController {
         val agent = Agent(id)
 
         println("Private Key: ")
-        println(agent.privateKey.key.length)
+        println(agent.privateKey.length)
 
         println("Public Key: ")
         println(agent.publicKey.length)
